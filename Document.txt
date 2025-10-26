@@ -1,0 +1,39 @@
+
+**NOTE : The Mock-up and photos are not included**  Housing - Home Service App UI Kit
+**Template Specifications:**
+–––––––––––––––––––––––
+
+* 01 Dashboard Screen
+* Figma Compatibility
+* Modern & Contemporary Design
+* Free fonts used
+* Fully Customizable
+* Change Colors Easily
+* Clean, Unique, Modern and Trending Style
+
+
+**Screen Included:**
+–––––––––––––––––––––––
+1. Splash screen
+2. On boarding 
+3. Log In/Sign Up
+4. Log In
+5. Sign Up
+6. Forgot password
+7. Verify OTP
+8. Home
+09. Categires
+10. Search
+11. Book services
+12. Select Time & Date
+13. Bookings
+14. Account
+
+**Fonts Used:**
+–––––––––––––––––––––––
+* https://fonts.google.com/specimen/Poppins?query=pop
+
+Thanks again for your support, its greatly appreciated.
+Also checkout my portfolio for other template files if you wish.
+
+LoganMotion (Email: loganmotion0901@gmail.com)

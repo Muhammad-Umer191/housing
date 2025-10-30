@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Housing</string>
+    <string name="app_logo">app_logo</string>
+    <string name="on_boarding_info">Plumber and expert\nnearby you</string>
+    <string name="moto">Instant Experts, Zero Hassle</string>
+    <string name="move_to_login">Move to login\n</string>
+    <string name="onboarding_graphic_description">image_description_of_onboarding</string>
+    <string name="greater_than"><![CDATA[>]]></string>
 </resources>

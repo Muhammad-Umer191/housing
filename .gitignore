@@ -1,34 +1,53 @@
 # Gradle files
 .gradle/
-build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
 
-# Local configuration file (sdk path, etc)
+# Local configuration file (SDK path, etc.)
 local.properties
 
-# Log/OS Files
+# OS / Log files
 *.log
+*.tmp
+*.temp
+*.bak
+*.orig
+.DS_Store
+Thumbs.db
 
-# Android Studio generated files and folders
+# Android Studio generated folders
 captures/
 .externalNativeBuild/
 .cxx/
-*.aab
+
+# Build outputs
 *.apk
+*.aab
 output-metadata.json
 
-# IntelliJ
-*.iml
+# Keystore files (sensitive)
+*.jks
+*.keystore
+signing.properties
+
+# Google Services (Firebase, etc.)
+google-services.json
+
+# IntelliJ / Android Studio project files
 .idea/
+*.iml
+*.ipr
+*.iws
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
 
-# Keystore files
-*.jks
-*.keystore
-
-# Google Services (e.g. APIs or Firebase)
-google-services.json
-
-# Android Profiling
+# Profiling / Memory Dumps
 *.hprof
+
+/app/release/
+/app/debug/
+proguard/
+lint/
+gradle.properties
+

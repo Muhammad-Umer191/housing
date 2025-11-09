@@ -1,1 +1,66 @@
-/build
+# Gradle build files
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration files (IDE-specific)
+local.properties
+.idea/
+*.iml
+
+# Android Studio captures / logs
+captures/
+*.log
+
+# Generated files
+gen/
+out/
+navigation.json
+
+# Signing files (don’t commit your keystore!)
+*.jks
+*.keystore
+key.properties
+
+# Gradle caches
+.gradle/
+.gradle/
+.gradle/*
+
+# Gradle wrapper
+!gradle/wrapper/gradle-wrapper.jar
+
+# Binary files
+*.apk
+*.ap_
+*.aab
+
+# Crashlytics / Firebase
+fabric.properties
+crashlytics-build.properties
+
+# Android Profiling files
+*.hprof
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary / lock files
+*.lock
+*.tmp
+*.temp
+
+# Unit test files
+test-output/
+
+# Miscellaneous
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/deploymentTargetDropDown.xml
+

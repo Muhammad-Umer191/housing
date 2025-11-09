@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Housing</string>
+    <string name="app_logo">app_logo</string>
+    <string name="on_boarding_info">Plumber and expert\nnearby you</string>
+    <string name="moto">Instant Experts, Zero Hassle</string>
+    <string name="move_to_login">Move to login\n</string>
+    <string name="onboarding_graphic_description">image_description_of_onboarding</string>
+    <string name="greater_than"><![CDATA[>]]></string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="or">Or</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="email_label">Email</string>
+    <string name="back_button_desc">back going button</string>
+    <string name="password_label">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="login_redirect">Already have an account? Log In</string>
 </resources>

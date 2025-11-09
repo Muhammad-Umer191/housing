@@ -57,16 +57,20 @@
         app:layout_constraintBottom_toTopOf="@id/next"
         />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/next"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="60dp"
+        android:layout_marginTop="100dp"
         android:text="@string/greater_than"
         android:textSize="25sp"
         android:textColor="@color/white"
-        android:background="@drawable/round_button_purple"
-        android:layout_marginTop="50dp"
+        android:padding="0dp"
+        app:cornerRadius="25dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

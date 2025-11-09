@@ -19,7 +19,7 @@ public class OnBoarding extends AppCompatActivity
 
         nextButton.setOnClickListener(v ->
         {
-            Intent intent = new Intent(OnBoarding.this, MainActivity.class);
+            Intent intent = new Intent(OnBoarding.this, LoginSignup.class);
             startActivity(intent);
             finish();
         });

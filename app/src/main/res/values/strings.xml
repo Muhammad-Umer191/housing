@@ -38,9 +38,8 @@
     <string name="home_cleaning">Home Cleaning</string>
     <string name="title_home">Home</string>
     <string name="title_chat">Chat</string>
-    <string name="title_notifications">Notifiation</string>
+    <string name="title_notifications">Notification</string>
     <string name="title_profile">Profile</string>
-
     <string name="offer_info_description">Limited time offer for AC services.</string>
     <string name="offer_ac_service">AC Service</string>
     <string name="get_25_percent">Get 25% off</string>
@@ -48,9 +47,52 @@
     <string name="house_cleaning">House Cleaning</string>
     <string name="price">$25/hr</string>
     <string name="service_image_description">description</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="all_categories">All Categories</string>
-
+    <string name="title_bookings">Bookings</string>
+    <string name="filter">Filter</string>
+    <string name="service_icon">Service Icon</string>
+    <string name="status">Status</string>
+    <string name="schedule_icon">Schedule Icon</string>
+    <string name="schedule">Schedule</string>
+    <string name="provider_icon">Provider Icon if any</string>
+    <string name="service_provider">Service provider</string>
+    <string name="call">Call</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="history">History</string>
+    <string name="draft">Draft</string>
+    <string name="date">8:00-9:00 AM, 09 Dec 2025</string>
+    <string name="rating_and_no_of_services">4.8 (87)</string>
+    <string name="more_options">More options</string>
+    <string name="list_view_toggle">List View Toggle</string>
+    <string name="grid_view_toggle">Grid View Toggle</string>
+    <string name="book_now">Book Now</string>
+    <string name="save_draft">Save Draft</string>
+    <string name="bill_details">Bill Details</string>
+    <string name="total">Total:</string>
+    <string name="add_details_about_your_service_request">Add details about your service request...</string>
+    <string name="description">Description</string>
+    <string name="decrement">Decrement</string>
+    <string name="increment">Increment</string>
+    <string name="type_of_property">Type of Property</string>
+    <string name="number_of_units">Number of Units</string>
+    <string name="number_of_bedrooms">Number of Bedrooms</string>
+    <string name="property_icon">Property Icon</string>
+    <string name="home">Home</string>
+    <string name="close">Close</string>
+    <string name="date_icon">Date Icon</string>
+    <string name="select_your_date">Select your Date</string>
+    <string name="time_icon">Time Icon</string>
+    <string name="time">Time</string>
+    <string name="select_your_time">Select your Time</string>
+    <string name="_continue">Continue</string>
+    <string name="hello">Hello</string>
+    <string name="account">Account</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="menu_icon">Menu Icon</string>
+    <string name="navigation_arrow">Navigation Arrow</string>
+    <string name="logout_icon">Logout Icon</string>
+    <string name="log_out">Log out</string>
 
 </resources>

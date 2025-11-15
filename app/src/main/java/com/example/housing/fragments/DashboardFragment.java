@@ -1,5 +1,6 @@
 package com.example.housing.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.widget.NestedScrollView;
 
 import com.example.housing.R;
+import com.example.housing.activities.ServiceList;
 import com.example.housing.adapters.CategoryAdapter;
 import com.example.housing.adapters.OfferAdapter;
 import com.example.housing.adapters.ServiceAdapter;
@@ -77,7 +79,9 @@ public class DashboardFragment extends Fragment
                 }
                 else
                 {
-                    // Handle other category clicks if needed
+                    Intent intent = new Intent(requireContext(), ServiceList.class);
+                    intent.putExtra("category_name", category.getName());
+                    startActivity(intent);
                 }
             });
 

@@ -1,21 +1,23 @@
-package com.example.housing;
+package com.example.housing.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButton;
+import com.example.housing.R;
+import com.example.housing.fragments.DashboardFragment;
 
 public class Signup extends AppCompatActivity
 {
 
     private EditText email, password, confirmPassword;
-    private MaterialButton sign_up, btn_continue_google;
+    private Button sign_up, btn_continue_google;
     private TextView loginMain;
 
     @Override
@@ -53,7 +55,7 @@ public class Signup extends AppCompatActivity
 
             if (verifySignup(emailInput, passwordInput))
             {
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, DashboardFragment.class);
                 startActivity(intent);
                 finish();
             }

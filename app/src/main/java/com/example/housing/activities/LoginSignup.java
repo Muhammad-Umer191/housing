@@ -1,20 +1,20 @@
-package com.example.housing;
+package com.example.housing.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 //import com.example.housing.data.FirebaseAuthManager;
+import com.example.housing.R;
 import com.example.housing.utils.PrefManager;
-import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginSignup extends AppCompatActivity
 {
 
-    private MaterialButton btnLogin, btnSignUp, btnContinueGoogle;
+    private Button btnLogin, btnSignUp, btnContinueGoogle;
 
     private PrefManager prefManager;
 //    private FirebaseAuthManager firebaseAuthManager;

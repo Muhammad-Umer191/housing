@@ -9,4 +9,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray_500">#807E7E</color>
+    <color name="blue">#62AFFD</color>
+    <color name="light_gray_or_off_white">#D3D3D3</color>
 </resources>

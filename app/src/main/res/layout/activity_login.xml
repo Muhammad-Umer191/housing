@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Login">
+    tools:context=".activities.Login">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
@@ -51,6 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/round_edit_text"
+        android:textColor="@color/black"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
@@ -61,7 +62,8 @@
         android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_label" />
+        app:layout_constraintTop_toBottomOf="@id/email_label"
+        />
 
     <TextView
         android:id="@+id/password_label"
@@ -86,6 +88,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/round_edit_text"
+        android:textColor="@color/black"
         android:hint="@string/password_label"
         android:inputType="textPassword"
         android:minHeight="56dp"
@@ -124,15 +127,16 @@
         app:layout_constraintTop_toTopOf="@id/rememberMe" />
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/log_in"
-        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
         android:text="@string/log_in"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/purple_500"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:cornerRadius="30dp"
@@ -152,7 +156,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/log_in" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_continue_google"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"

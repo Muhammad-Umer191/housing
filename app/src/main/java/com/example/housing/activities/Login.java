@@ -1,29 +1,30 @@
-package com.example.housing;
+package com.example.housing.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButton;
+import com.example.housing.R;
+import com.example.housing.fragments.DashboardFragment;
 
-public class Login extends AppCompatActivity {
-
+public class Login extends AppCompatActivity
+{
     private EditText email, password;
     private CheckBox rememberMe;
-    private MaterialButton log_in, btn_continue_google;
-    private TextView forgotPassword;
+    private Button log_in, btn_continue_google;
+    private Button forgotPassword;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login); // your XML
+        setContentView(R.layout.activity_login);
 
-        // Initialize views
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         rememberMe = findViewById(R.id.rememberMe);
@@ -38,16 +39,19 @@ public class Login extends AppCompatActivity {
 
             boolean loginSuccess = verifyLogin(emailText, passwordText);
 
-            if (loginSuccess) {
-                Intent intent = new Intent(this, MainActivity.class);
+            if (loginSuccess)
+            {
+                Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 finish();
-            } else {
+            }
+            else
+            {
                 email.setError("Wrong email or password");
                 password.setError("Wrong email or password");
                 email.requestFocus();
             }
-        } );
+        });
 
         btn_continue_google.setOnClickListener(v ->
         {
@@ -56,18 +60,20 @@ public class Login extends AppCompatActivity {
 
         forgotPassword.setOnClickListener(v ->
         {
-            // TODO: implement forgot password logic
+            Intent intent = new Intent(this, ForgotPassword.class);
+            startActivity(intent);
         });
     }
 
     /** Handles normal email/password login **/
-    private void handleLogin() {
-
+    private void handleLogin()
+    {
+        // Future implementation for login logic
     }
 
-    private boolean verifyLogin(String email, String password) {
+    private boolean verifyLogin(String email, String password)
+    {
         // TODO: Replace with real verification
-        // Example test credentials:
-        return email.equals("test@example.com") && password.equals("123456");
+        return email.equals("boss@gmail.com") && password.equals("123456");
     }
 }

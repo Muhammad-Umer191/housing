@@ -17,4 +17,40 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="login_redirect">Already have an account? Log In</string>
+    <string name="forgot_text_detail">Enter the email associated with your account and we’ll send an email with code to reset your password</string>
+    <string name="confirm">Confirm</string>
+    <string name="enter_your_email">Text your email</string>
+    <string name="email">Email</string>
+    <string name="verify_otp_title">Verify OTP</string>
+    <string name="otp_description_text">Enter your OTP which has been sent to your email and completely verify you account</string>
+    <string name="resend_code_info">A code has been sent to you</string>
+    <string name="resend_timer_value">Resend in 01:00</string>
+    <string name="enter_the_6_digit_otp">Enter the 6-digit OTP</string>
+    <string name="current_location_label">Current Location</string>
+    <string name="current_address">Current Address</string>
+    <string name="main_title_text">What you are looking for today</string>
+    <string name="search_placeholder">Search what you need...</string>
+    <string name="cleaning_services_title">Cleaning services</string>
+    <string name="see_all_text">See all ></string>
+    <string name="category_icon_description">Icon description</string>
+    <string name="ac_repair">AC Repair</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="home_cleaning">Home Cleaning</string>
+    <string name="title_home">Home</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_notifications">Notifiation</string>
+    <string name="title_profile">Profile</string>
+
+    <string name="offer_info_description">Limited time offer for AC services.</string>
+    <string name="offer_ac_service">AC Service</string>
+    <string name="get_25_percent">Get 25% off</string>
+    <string name="grab_offer_link">Grab this offer</string>
+    <string name="house_cleaning">House Cleaning</string>
+    <string name="price">$25/hr</string>
+    <string name="service_image_description">description</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="all_categories">All Categories</string>
+
+
 </resources>

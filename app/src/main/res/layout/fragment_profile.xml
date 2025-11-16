@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".fragments.ProfileFragment"
+    >
+
+    <RelativeLayout
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
+        >
+
+        <TextView
+            android:id="@+id/account_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/account"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/profile_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/rounded_circle_light_background"
+            android:contentDescription="@string/profile_picture"
+            />
+
+        <LinearLayout
+            android:id="@+id/text_info_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_image"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Tom Ryan"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="ryanlexx@gmail.com"
+                android:textColor="@color/gray_500"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/edit_profile_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/edit_profile"
+            app:tint="@color/gray_500"
+            android:src="@drawable/edit"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        >
+
+        <include layout="@layout/item_account_menu"
+            android:id="@+id/menu_personal_info"
+            />
+
+        <include layout="@layout/item_account_menu_with_value"
+            android:id="@+id/menu_language"
+            />
+
+<!--        <include layout="@layout/item_account_menu"-->
+<!--            android:id="@+id/menu_privacy_policy"-->
+<!--            />-->
+
+<!--        <include layout="@layout/item_account_menu"-->
+<!--            android:id="@+id/menu_help_center"-->
+<!--            />-->
+
+<!--        <include layout="@layout/item_account_menu"-->
+<!--            android:id="@+id/menu_setting"-->
+<!--            />-->
+
+        <include layout="@layout/item_account_menu_logout"
+            android:id="@+id/menu_logout"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

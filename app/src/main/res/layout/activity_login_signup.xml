@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".LoginSignup">
+    tools:context=".activities.LoginSignup">
 
     <ImageView
         android:id="@+id/logo"
@@ -34,12 +34,14 @@
         app:layout_constraintTop_toBottomOf="@id/logo"
         />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/log_in"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:backgroundTint="@color/purple_500"
         android:layout_marginStart="32dp"
+        android:textColor="@color/white"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="32dp"
         android:text="@string/log_in"
@@ -51,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@id/app_name"
         />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_sign_up"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
@@ -79,7 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_sign_up" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_continue_google"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"

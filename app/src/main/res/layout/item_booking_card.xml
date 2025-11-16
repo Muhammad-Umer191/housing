@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    android:backgroundTint="@color/white"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/service"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            tools:src="@drawable/ac_repair"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/service_icon"
+            />
+
+        <TextView
+            android:id="@+id/service_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            tools:text="AC Installation"
+            app:layout_constraintStart_toEndOf="@id/service"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/service"/>
+
+        <TextView
+            android:id="@+id/reference_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/gray_500"
+            tools:text="Reference Code: #D-571224"
+            app:layout_constraintStart_toStartOf="@id/service_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/service_title"/>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/purple_500"
+            app:layout_constraintTop_toBottomOf="@id/service"/>
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/status"
+            android:textSize="12sp"
+            android:textColor="@color/gray_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            />
+
+        <TextView
+            android:id="@+id/status_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/offer_card_background_green"
+            tools:text="Confirmed"
+            tools:backgroundTint="@color/green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/status"
+            app:layout_constraintBottom_toBottomOf="@id/status"/>
+
+        <ImageView
+            android:id="@+id/schedule"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/calendar"
+            app:tint="@color/gray_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/status"
+            android:contentDescription="@string/schedule_icon"/>
+
+        <TextView
+            android:id="@+id/text_schedule"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            tools:text="@string/date"
+            app:layout_constraintStart_toEndOf="@id/schedule"
+            app:layout_constraintTop_toTopOf="@id/schedule"
+            app:layout_constraintBottom_toBottomOf="@id/schedule"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/schedule"
+            android:textSize="10sp"
+            android:textColor="@color/gray_500"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/schedule"
+            tools:ignore="SmallSp"
+            />
+
+
+        <ImageView
+            android:id="@+id/provider"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/provider"
+            app:tint="@color/gray_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/schedule"
+            android:contentDescription="@string/provider_icon"/>
+
+        <TextView
+            android:id="@+id/text_provider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            tools:text="I and U Group of Companies"
+            app:layout_constraintStart_toEndOf="@id/provider"
+            app:layout_constraintTop_toTopOf="@id/provider"
+            app:layout_constraintBottom_toBottomOf="@id/provider"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_provider"
+            android:textSize="10sp"
+            android:textColor="@color/gray_500"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/provider"
+            tools:ignore="SmallSp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/call_button"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/call"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:background="@drawable/round_button_purple"
+            android:paddingHorizontal="16dp"
+            android:drawableStart="@drawable/call"
+            android:drawablePadding="4dp"
+            android:drawableTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/provider"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

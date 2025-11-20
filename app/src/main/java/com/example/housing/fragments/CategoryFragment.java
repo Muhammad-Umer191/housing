@@ -1,5 +1,6 @@
 package com.example.housing.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.housing.R;
+import com.example.housing.activities.ServiceList;
 import com.example.housing.adapters.CategoryAdapter;
 import com.example.housing.models.Category;
 
@@ -61,7 +63,9 @@ public class CategoryFragment extends Fragment
     {
         CategoryAdapter adapter = new CategoryAdapter(categoryList, (category, position) ->
         {
-            // TODO: Handle category click
+            Intent intent = new Intent(requireContext(), ServiceList.class);
+            intent.putExtra("category_name", category.getName());
+            startActivity(intent);
         });
 
         categoryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));

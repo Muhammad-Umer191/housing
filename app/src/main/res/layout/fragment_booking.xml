@@ -28,20 +28,23 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
-        <TextView
+        <Button
             android:id="@+id/filter_recent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/filter"
+            android:text="@string/Sort"
             android:textSize="14sp"
-            android:textColor="@color/purple_500"
-            android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            app:drawableEndCompat="@drawable/chevron_down"
+            app:icon="@drawable/chevron_down"
+            app:iconGravity="textEnd"
+            app:iconPadding="4dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/purple_500"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/bookings"
             app:layout_constraintBottom_toBottomOf="@id/bookings"
             />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

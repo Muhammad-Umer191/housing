@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,10 +35,9 @@ public class ServiceDetail extends AppCompatActivity
     private double rating;
     private String category;
 
-    // Internal
     private int units = 1;
     private int bedrooms = 1;
-    private String selectedProperty = "Home";
+    private String selectedProperty = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -54,6 +55,22 @@ public class ServiceDetail extends AppCompatActivity
 
         button_book_now.setOnClickListener(v ->
         {
+            // Validation
+            if (selectedProperty == null || selectedProperty.isEmpty()) {
+                Toast.makeText(this, "Please select a property type", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (units <= 0) {
+                Toast.makeText(this, "Please select at least 1 unit", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (bedrooms <= 0) {
+                Toast.makeText(this, "Please select at least 1 bedroom", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             BookingBottomSheet bottomSheet = new BookingBottomSheet();
             bottomSheet.show(getSupportFragmentManager(), "bookingBottomSheet");
         });
@@ -61,6 +78,7 @@ public class ServiceDetail extends AppCompatActivity
         button_save_draft.setOnClickListener(view ->
         {
             // TODO: 11/15/25 Add draft logic
+            Toast.makeText(this, "Draft saved", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -84,6 +102,15 @@ public class ServiceDetail extends AppCompatActivity
         property_home = findViewById(R.id.property_home);
         property_office = findViewById(R.id.property_office);
         property_villa = findViewById(R.id.property_villa);
+
+        ((ImageView) property_home.findViewById(R.id.property_icon)).setImageResource(R.drawable.home);
+        ((TextView) property_home.findViewById(R.id.property_label)).setText(R.string.home);
+
+        ((ImageView) property_office.findViewById(R.id.property_icon)).setImageResource(R.drawable.office);
+        ((TextView) property_office.findViewById(R.id.property_label)).setText(R.string.office);
+
+        ((ImageView) property_villa.findViewById(R.id.property_icon)).setImageResource(R.drawable.villa);
+        ((TextView) property_villa.findViewById(R.id.property_label)).setText(R.string.villa);
 
         units_counter = findViewById(R.id.units_counter);
         bedrooms_counter = findViewById(R.id.bedrooms_counter);
@@ -131,7 +158,6 @@ public class ServiceDetail extends AppCompatActivity
         }
     }
 
-
     private void setupUnitCounter()
     {
         ImageButton dec = units_counter.findViewById(R.id.button_decrement);
@@ -177,6 +203,7 @@ public class ServiceDetail extends AppCompatActivity
             updateTotalBill();
         });
     }
+
     private void updateTotalBill()
     {
         text_total_value.setText("USD " + calculateTotal());

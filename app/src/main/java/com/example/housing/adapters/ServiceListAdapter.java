@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.housing.R;
 import com.example.housing.activities.ServiceDetail;
 import com.example.housing.models.ServiceItem;
+
 import java.util.List;
 
 public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.ServiceViewHolder>
@@ -19,6 +22,8 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
     private final List<ServiceItem> list;
     private final String category;
 
+    private boolean isGrid = false;
+
     public ServiceListAdapter(Context context, List<ServiceItem> list, String category)
     {
         this.context = context;
@@ -26,11 +31,16 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
         this.category = category;
     }
 
+    // ---------- FIXED: Only ONE onCreateViewHolder ----------
     @NonNull
     @Override
     public ServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_service_list_card, parent, false);
+        int layout = isGrid ? R.layout.item_service_grid_card
+                : R.layout.item_service_list_card;
+
+        View view = LayoutInflater.from(context).inflate(layout, parent, false);
+
         return new ServiceViewHolder(view);
     }
 
@@ -40,20 +50,17 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
         ServiceItem item = list.get(position);
 
         holder.title.setText(item.getTitle());
-        holder.rating.setText(String.valueOf(item.getRating()));
+        holder.rating.setText(item.getRating());
         holder.priceLabel.setText(item.getPrice());
         holder.priceValue.setText("$" + item.getPriceValue());
 
-        // itemView click → open detail page
-        holder.itemView.setOnClickListener(v ->
-        {
+        holder.itemView.setOnClickListener(v -> {
             Intent i = new Intent(context, ServiceDetail.class);
             i.putExtra("service_id", item.getId());
             i.putExtra("title", item.getTitle());
             i.putExtra("price", item.getPrice());
             i.putExtra("rating", item.getRating());
             i.putExtra("category", category);
-
             context.startActivity(i);
         });
     }
@@ -77,5 +84,11 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
             priceLabel = itemView.findViewById(R.id.price);
             priceValue = itemView.findViewById(R.id.price_value);
         }
+    }
+
+    public void setGridLayout(boolean grid)
+    {
+        this.isGrid = grid;
+        notifyDataSetChanged();
     }
 }

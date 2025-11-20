@@ -94,5 +94,19 @@
     <string name="navigation_arrow">Navigation Arrow</string>
     <string name="logout_icon">Logout Icon</string>
     <string name="log_out">Log out</string>
+    <string name="default_web_client_id">696871733474-4e7v5l0dq8tso29ad02s9hngevfh7q50.apps.googleusercontent.com</string>
+    <string name="time_ascending">Time Ascending</string>
+    <string name="time_descending">Time Descending</string>
+    <string name="name_ascending">Name Ascending</string>
+    <string name="name_descending">Name Descending</string>
+    <string name="unknown_city">Unknown city</string>
+    <string name="error_getting_address">Error getting address</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="location_unavailable">Location unavailable</string>
+    <string name="Sort">Sort</string>
+    <string name="starts_from">Starts From</string>
+    <string name="office">Office</string>
+    <string name="villa">Villa</string>
+
 
 </resources>

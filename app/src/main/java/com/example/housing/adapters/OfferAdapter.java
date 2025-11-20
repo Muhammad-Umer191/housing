@@ -61,8 +61,8 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         public OfferViewHolder(@NonNull View itemView)
         {
             super(itemView);
-//            image = itemView.findViewById(R.id.offer_image);
-//            title = itemView.findViewById(R.id.offer_title);
+//            image = itemView.findViewById(R.id.offer_info_icon);
+//            title = itemView.findViewById(R.id.offer_main_text);
         }
     }
 }

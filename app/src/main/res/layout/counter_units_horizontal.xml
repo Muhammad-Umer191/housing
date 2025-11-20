@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:background="@drawable/rounded_counter_border">
@@ -26,7 +25,7 @@
         android:layout_height="wrap_content"
         android:minWidth="32dp"
         android:gravity="center"
-        tools:text="2"
+        tools:text="0"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"

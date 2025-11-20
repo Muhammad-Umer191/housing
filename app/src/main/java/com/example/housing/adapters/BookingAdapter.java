@@ -1,5 +1,7 @@
 package com.example.housing.adapters;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.housing.R;
@@ -36,35 +39,44 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position)
     {
         Booking booking = bookingList.get(position);
-        holder.service_title.setText(booking.getServiceTitle());
-        holder.text_schedule.setText(booking.getSchedule());
-        holder.text_provider.setText(booking.getProvider());
-        holder.status_badge.setText(booking.getStatusBadge());
-        holder.service.setImageResource(booking.getImageResId()); // set image
+
+        holder.serviceTitle.setText(booking.getServiceTitle());
+        holder.schedule.setText(booking.getSchedule());
+        holder.provider.setText(booking.getProvider());
+        holder.statusBadge.setText(booking.getStatusBadge());
+        holder.image.setImageResource(booking.getImageResId());
+
+        holder.callButton.setOnClickListener(v ->
+        {
+            String phone = booking.getPhoneNumber();
+
+            if (phone != null && !phone.isEmpty())
+            {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + phone));
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
-    public int getItemCount()
-    {
-        return bookingList.size();
-    }
+    public int getItemCount() { return bookingList.size(); }
 
     public static class BookingViewHolder extends RecyclerView.ViewHolder
     {
-        ImageView service;
-        TextView service_title;
-        TextView text_schedule;
-        TextView text_provider;
-        TextView status_badge;
+        ImageView image;
+        TextView serviceTitle, schedule, provider, statusBadge;
+        AppCompatButton callButton;
 
         public BookingViewHolder(@NonNull View itemView)
         {
             super(itemView);
-            service = itemView.findViewById(R.id.service);
-            service_title = itemView.findViewById(R.id.service_title);
-            text_schedule = itemView.findViewById(R.id.text_schedule);
-            text_provider = itemView.findViewById(R.id.text_provider);
-            status_badge = itemView.findViewById(R.id.status_badge);
+            image = itemView.findViewById(R.id.service);
+            serviceTitle = itemView.findViewById(R.id.service_title);
+            schedule = itemView.findViewById(R.id.text_schedule);
+            provider = itemView.findViewById(R.id.text_provider);
+            statusBadge = itemView.findViewById(R.id.status_badge);
+            callButton = itemView.findViewById(R.id.call_button);
         }
     }
 }

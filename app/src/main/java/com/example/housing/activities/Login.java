@@ -1,79 +1,174 @@
 package com.example.housing.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.housing.R;
-import com.example.housing.fragments.DashboardFragment;
+import com.example.housing.network.LoginRequest;
+import com.example.housing.network.LoginResponse;
+import com.example.housing.network.RetrofitClient;
+import com.example.housing.utils.PrefManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Login extends AppCompatActivity
 {
     private EditText email, password;
+    private Button logInBtn, googleSignInBtn;
     private CheckBox rememberMe;
-    private Button log_in, btn_continue_google;
-    private Button forgotPassword;
+    private TextView forgotPassword;
+
+    private PrefManager prefManager;
+
+    // Constants for Google Deep Link flow (even if not used for Retrofit, kept for openGoogleLogin())
+    private static final String SUPABASE_URL = "https://pxuboqabrgabizqrxdmb.supabase.co";
+    private static final String REDIRECT_URI = "com.example.housing://auth/callback";
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        logInBtn = findViewById(R.id.log_in);
+        googleSignInBtn = findViewById(R.id.btn_continue_google);
         rememberMe = findViewById(R.id.rememberMe);
-        log_in = findViewById(R.id.log_in);
-        btn_continue_google = findViewById(R.id.btn_continue_google);
         forgotPassword = findViewById(R.id.forgotPassword);
 
-        log_in.setOnClickListener(v ->
+        prefManager = new PrefManager(this);
+
+        // Autofill email if remembered
+        String savedEmail = prefManager.getEmail();
+        if(savedEmail != null)
         {
-            String emailText = email.getText().toString().trim();
-            String passwordText = password.getText().toString().trim();
+            email.setText(savedEmail);
+            rememberMe.setChecked(true);
+        }
 
-            boolean loginSuccess = verifyLogin(emailText, passwordText);
-
-            if (loginSuccess)
-            {
-                Intent intent = new Intent(this, HomeActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-                email.setError("Wrong email or password");
-                password.setError("Wrong email or password");
-                email.requestFocus();
-            }
-        });
-
-        btn_continue_google.setOnClickListener(v ->
-        {
-            // TODO: implement Google login later
-        });
-
+        logInBtn.setOnClickListener(v -> handleEmailLogin());
+        googleSignInBtn.setOnClickListener(v -> openGoogleLogin());
         forgotPassword.setOnClickListener(v ->
+                startActivity(new Intent(Login.this, ForgotPassword.class)));
+    }
+
+    private void handleEmailLogin()
+    {
+        String emailInput = email.getText().toString().trim();
+        String passwordInput = password.getText().toString().trim();
+
+        if(emailInput.isEmpty() || passwordInput.isEmpty())
         {
-            Intent intent = new Intent(this, ForgotPassword.class);
-            startActivity(intent);
-        });
+            Toast.makeText(this, "Enter email and password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        LoginRequest loginRequest = new LoginRequest(emailInput, passwordInput);
+
+        RetrofitClient.getAuthService().login(loginRequest) // <-- Using login endpoint
+                .enqueue(new Callback<LoginResponse>()
+                {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response)
+                    {
+                        if(response.isSuccessful() && response.body() != null)
+                        {
+                            LoginResponse login = response.body();
+
+                            // Save session tokens and user details
+                            prefManager.saveLogin(
+                                    login.getAccessToken(),
+                                    login.getRefreshToken(),
+                                    login.getUserId(),
+                                    login.getEmail(),
+                                    "email"
+                            );
+
+                            Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(Login.this, HomeActivity.class));
+                            finish();
+                        }
+                        else
+                        {
+                            String errorMsg = "Login failed: " + response.message();
+                            try {
+                                if (response.errorBody() != null) {
+                                    Log.e("Login", "Error Body: " + response.errorBody().string());
+                                }
+                            } catch (Exception e) {
+                                Log.e("Login", "Error reading error body", e);
+                            }
+                            Toast.makeText(Login.this, errorMsg, Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t)
+                    {
+                        Toast.makeText(Login.this, "Login failed: " + t.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                        Log.e("Login", "Network failure", t);
+                    }
+                });
     }
 
-    /** Handles normal email/password login **/
-    private void handleLogin()
+    private void openGoogleLogin()
     {
-        // Future implementation for login logic
+        // Launches the browser redirect flow for Google Auth
+        String url = SUPABASE_URL + "/auth/v1/authorize" +
+                "?provider=google" +
+                "&redirect_to=" + REDIRECT_URI;
+
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        Toast.makeText(this, "Opening Google login...", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean verifyLogin(String email, String password)
+    @Override
+    protected void onNewIntent(Intent intent)
     {
-        // TODO: Replace with real verification
-        return email.equals("boss@gmail.com") && password.equals("123456");
+        super.onNewIntent(intent);
+        Uri uri = intent.getData();
+
+        if(uri != null && uri.toString().startsWith(REDIRECT_URI))
+        {
+            String fragment = uri.getFragment();
+            if(fragment != null)
+            {
+                String[] params = fragment.split("&");
+                String accessToken = null, refreshToken = null, provider = "google";
+
+                for(String param : params)
+                {
+                    if(param.startsWith("access_token="))
+                        accessToken = param.split("=")[1];
+                    else if(param.startsWith("refresh_token="))
+                        refreshToken = param.split("=")[1];
+                }
+
+                if(accessToken != null && refreshToken != null)
+                {
+                    prefManager.saveLogin(accessToken, refreshToken, null, null, provider);
+                    Toast.makeText(this, "Google login successful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Login.this, HomeActivity.class));
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(this, "Failed to get tokens from redirect", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 }

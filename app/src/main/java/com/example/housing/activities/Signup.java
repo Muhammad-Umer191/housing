@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.housing.HousingApplication; // ⬅️ NEW IMPORT for Application Singleton
 import com.example.housing.R;
 import com.example.housing.network.LoginRequest;
 import com.example.housing.network.LoginResponse;
@@ -45,7 +46,9 @@ public class Signup extends AppCompatActivity
         googleSignUpBtn = findViewById(R.id.btn_continue_google);
         loginRedirect = findViewById(R.id.loginMain);
 
-        prefManager = new PrefManager(this);
+        // ⬅️ FIX 1: Get the stable Singleton instance instead of creating a new one
+        // Note: The PrefManager class was updated in a previous step to include getInstance(context)
+        prefManager = PrefManager.getInstance(this);
 
         signUpBtn.setOnClickListener(v -> handleEmailSignup());
         googleSignUpBtn.setOnClickListener(v -> openGoogleLogin());
@@ -79,7 +82,18 @@ public class Signup extends AppCompatActivity
 
         LoginRequest signupRequest = new LoginRequest(emailInput, passwordInput);
 
-        RetrofitClient.getAuthService().signUp(signupRequest) // <-- Using signUp endpoint
+        // ⬅️ FIX 2: Supabase signup returns the user immediately, but the tokens are for
+        // the unverified session. Do NOT save the session or go to HomeActivity yet.
+        // We MUST explicitly send the redirect_to URL for email confirmation.
+        // NOTE: If your Supabase API call doesn't accept a redirect_to parameter,
+        // you'll need to update your Retrofit definition (AuthService) and the Request class.
+        // Assuming your API service is updated to accept the redirect_to parameter:
+
+        // Placeholder for correct signup method that includes redirect_to:
+        // RetrofitClient.getAuthService().signUp(signupRequest, REDIRECT_URI)
+        // I will revert to your existing call structure but fix the POST-signup logic.
+
+        RetrofitClient.getAuthService().signUp(signupRequest)
                 .enqueue(new Callback<LoginResponse>()
                 {
                     @Override
@@ -87,24 +101,23 @@ public class Signup extends AppCompatActivity
                     {
                         if(response.isSuccessful() && response.body() != null)
                         {
-                            LoginResponse user = response.body();
+                            // ⬅️ CRITICAL CHANGE: Do NOT save login or go to HomeActivity here!
+                            // The user's session is UNVERIFIED and will be immediately invalid.
+                            // The goal is just to inform the user to check their email.
 
-                            prefManager.saveLogin(
-                                    user.getAccessToken(),
-                                    user.getRefreshToken(),
-                                    user.getUserId(),
-                                    user.getEmail(),
-                                    "email"
-                            );
+                            // Log.d("Signup", "User object returned, but is UNVERIFIED. Not saving session.");
 
-                            Toast.makeText(Signup.this, "See email for verification" ,
-                                    Toast.LENGTH_SHORT).show();
+                            // Navigate to a dedicated verification screen or simply Login screen
+                            Toast.makeText(Signup.this, "Signup successful. Please check your email to verify your account.",
+                                    Toast.LENGTH_LONG).show();
 
-                            startActivity(new Intent(Signup.this, HomeActivity.class));
+                            // Go back to the Login screen where they can try logging in after confirmation
+                            startActivity(new Intent(Signup.this, Login.class));
                             finish();
                         }
                         else
                         {
+                            // ... (Error handling remains the same) ...
                             String errorMsg = "Signup failed: " + response.message();
                             try {
                                 if (response.errorBody() != null) {
@@ -129,6 +142,7 @@ public class Signup extends AppCompatActivity
 
     private void openGoogleLogin()
     {
+        // ... (This code is correct for sending the redirect_to for Google login) ...
         String url = SUPABASE_URL + "/auth/v1/authorize" +
                 "?provider=google" +
                 "&redirect_to=" + REDIRECT_URI;
@@ -145,11 +159,21 @@ public class Signup extends AppCompatActivity
 
         if(uri != null && uri.toString().startsWith(REDIRECT_URI))
         {
+            // ⬅️ FIX 3: Check for error conditions in the URI (like the one you got)
+            if (uri.getFragment() != null && uri.getFragment().contains("error=")) {
+                Toast.makeText(this, "Authentication failed: Email link invalid or expired.", Toast.LENGTH_LONG).show();
+                // Do not save session, redirect to login
+                startActivity(new Intent(this, Login.class));
+                finish();
+                return;
+            }
+
+            // Existing logic for successful token extraction (which is for Google, but works for email too)
             String fragment = uri.getFragment();
             if(fragment != null)
             {
                 String[] params = fragment.split("&");
-                String accessToken = null, refreshToken = null, provider = "google";
+                String accessToken = null, refreshToken = null, provider = "email/social";
 
                 for(String param : params)
                 {
@@ -161,8 +185,9 @@ public class Signup extends AppCompatActivity
 
                 if(accessToken != null && refreshToken != null)
                 {
+                    // ⬅️ When launched via deep link, the user is verified. Save session.
                     prefManager.saveLogin(accessToken, refreshToken, null, null, provider);
-                    Toast.makeText(this, "Google sign-up successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Sign-in successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Signup.this, HomeActivity.class));
                     finish();
                 }

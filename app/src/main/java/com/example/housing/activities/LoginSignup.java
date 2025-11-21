@@ -13,7 +13,7 @@ import com.example.housing.utils.PrefManager;
 public class LoginSignup extends AppCompatActivity
 {
     private Button btnLogin, btnSignUp, btnContinueGoogle;
-    private PrefManager prefManager;
+    private PrefManager prefManager; // ⬅️ The instance variable is still needed
     private static final String SUPABASE_URL = "https://pxuboqabrgabizqrxdmb.supabase.co";
     private static final String REDIRECT_URI = "com.example.housing://auth/callback";
 
@@ -27,7 +27,8 @@ public class LoginSignup extends AppCompatActivity
         btnSignUp = findViewById(R.id.btn_sign_up);
         btnContinueGoogle = findViewById(R.id.btn_continue_google);
 
-        prefManager = new PrefManager(this);
+        // ⬅️ FIX: Use the stable Singleton instance
+        prefManager = PrefManager.getInstance(this);
 
         // -------------------------
         // Open Login activity
@@ -63,7 +64,7 @@ public class LoginSignup extends AppCompatActivity
     }
 
     // -------------------------
-    // Handle redirect from Google OAuth
+    // Handle redirect from Google OAuth (or Email Confirmation Deep Link)
     // -------------------------
     @Override
     protected void onNewIntent(Intent intent)
@@ -79,6 +80,15 @@ public class LoginSignup extends AppCompatActivity
 
             if(fragment != null)
             {
+                // ⬅️ FIX: Add error handling for invalid/expired links here too
+                if (fragment.contains("error=")) {
+                    Toast.makeText(this, "Authentication failed: Link invalid or expired.", Toast.LENGTH_LONG).show();
+                    // Do not save session, redirect to login
+                    startActivity(new Intent(this, Login.class));
+                    finish();
+                    return;
+                }
+
                 String[] params = fragment.split("&");
                 String accessToken = null, refreshToken = null, provider = "google";
 
@@ -97,7 +107,7 @@ public class LoginSignup extends AppCompatActivity
                     // as it's a client-side implicit grant. We save the tokens.
                     prefManager.saveLogin(accessToken, refreshToken, null, null, provider);
 
-                    Toast.makeText(this, "Google login successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
 
                     // Proceed to the main application
                     startActivity(new Intent(LoginSignup.this, HomeActivity.class));

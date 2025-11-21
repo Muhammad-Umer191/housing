@@ -107,6 +107,24 @@
     <string name="starts_from">Starts From</string>
     <string name="office">Office</string>
     <string name="villa">Villa</string>
+    <string name="back">Back</string>
+    <string name="go_to_next_screen">Go to next screen</string>
+    <string name="not_available">N/A</string>
+    <string name="logout">Logout</string>
+    <string name="personal_info_title">Personal Information</string>
+    <string name="full_name">Full Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="edit_profile_button">Edit</string>
+    <string name="language_title">Language</string>
+    <string name="select_app_language">Select Application Language</string>
+    <string name="language_change_note">Note: Changing the language will reload the application to apply the changes.</string>
+    <string name="language_changed_to">Language changed to</string>
+    <string name="logout_confirmation_title">Logout Confirmation</string>
+    <string name="logout_confirmation_message">Are you sure to logout?</string>
+    <string name="action_logout">Logout</string>
+    <string name="logged_out_successfully">Logout successfullly done</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="loading_notifications">Loading notifications...</string>
 
 
 </resources>

@@ -98,6 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:backgroundTint="@color/white"
         android:paddingHorizontal="16dp"
         >
 
@@ -108,18 +109,6 @@
         <include layout="@layout/item_account_menu_with_value"
             android:id="@+id/menu_language"
             />
-
-<!--        <include layout="@layout/item_account_menu"-->
-<!--            android:id="@+id/menu_privacy_policy"-->
-<!--            />-->
-
-<!--        <include layout="@layout/item_account_menu"-->
-<!--            android:id="@+id/menu_help_center"-->
-<!--            />-->
-
-<!--        <include layout="@layout/item_account_menu"-->
-<!--            android:id="@+id/menu_setting"-->
-<!--            />-->
 
         <include layout="@layout/item_account_menu_logout"
             android:id="@+id/menu_logout"

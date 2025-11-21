@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.housing.models.Category;
 import com.example.housing.models.Service;
-import com.example.housing.models.Offer;
 
 import com.example.housing.R;
 

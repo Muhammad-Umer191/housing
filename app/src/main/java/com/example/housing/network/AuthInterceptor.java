@@ -10,10 +10,9 @@ import okhttp3.Response;
 public class AuthInterceptor implements Interceptor
 {
     private final PrefManager prefManager;
-
     public AuthInterceptor(Context context)
     {
-        this.prefManager = new PrefManager(context);
+        this.prefManager = PrefManager.getInstance(context);
     }
 
     @Override

@@ -48,7 +48,8 @@ public class Login extends AppCompatActivity
         rememberMe = findViewById(R.id.rememberMe);
         forgotPassword = findViewById(R.id.forgotPassword);
 
-        prefManager = new PrefManager(this);
+        // ⬅️ FIX: Use the stable Singleton instance
+        prefManager = PrefManager.getInstance(this);
 
         // Autofill email if remembered
         String savedEmail = prefManager.getEmail();
@@ -146,6 +147,15 @@ public class Login extends AppCompatActivity
             String fragment = uri.getFragment();
             if(fragment != null)
             {
+                // ⬅️ FIX: Add error handling for invalid/expired links here too
+                if (fragment.contains("error=")) {
+                    Toast.makeText(this, "Authentication failed: Link invalid or expired.", Toast.LENGTH_LONG).show();
+                    // Do not save session, redirect to login
+                    startActivity(new Intent(this, Login.class));
+                    finish();
+                    return;
+                }
+
                 String[] params = fragment.split("&");
                 String accessToken = null, refreshToken = null, provider = "google";
 
@@ -160,7 +170,7 @@ public class Login extends AppCompatActivity
                 if(accessToken != null && refreshToken != null)
                 {
                     prefManager.saveLogin(accessToken, refreshToken, null, null, provider);
-                    Toast.makeText(this, "Google login successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, HomeActivity.class));
                     finish();
                 }

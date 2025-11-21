@@ -13,15 +13,11 @@ public class HousingApplication extends Application
     {
         super.onCreate();
 
-        // Initialize the PrefManager instance with the Application Context
-        // This runs only once when the app process starts.
-        prefManagerInstance = new PrefManager(this);
+        prefManagerInstance = PrefManager.getInstance(this);
 
-        // Initialize RetrofitClient
         RetrofitClient.initialize(this);
     }
 
-    // Public method to get the single instance from anywhere in the app
     public static PrefManager getPrefManagerInstance()
     {
         return prefManagerInstance;

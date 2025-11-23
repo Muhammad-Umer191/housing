@@ -145,40 +145,5 @@
         app:layout_constraintTop_toBottomOf="@id/rememberMe"
         />
 
-    <TextView
-        android:id="@+id/or"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/or"
-        android:textColor="@color/gray_500"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/log_in" />
-
-    <Button
-        android:id="@+id/btn_continue_google"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="center"
-        android:text="@string/continue_with_google"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:cornerRadius="30dp"
-        app:icon="@drawable/google"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        app:iconSize="60dp"
-        app:iconTint="@null"
-        app:strokeColor="@color/gray_500"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/or" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

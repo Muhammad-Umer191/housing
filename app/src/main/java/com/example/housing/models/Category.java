@@ -1,23 +1,33 @@
 package com.example.housing.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Category
 {
+
+    @SerializedName("id")
+    private String id;
+
+    @SerializedName("name")
     private String name;
-    private int icon_res_id;
 
-    public Category(String name, int icon_res_id)
-    {
-        this.name = name;
-        this.icon_res_id = icon_res_id;
-    }
+    @SerializedName("icon_url")
+    private String iconUrl;
 
-    public String getName()
-    {
-        return name;
-    }
+    @SerializedName("created_at")
+    private String createdAt;
 
-    public int getIconResId()
-    {
-        return icon_res_id;
-    }
+    public Category() {}
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getIconUrl() { return iconUrl; }
+    public void setIconUrl(String iconUrl) { this.iconUrl = iconUrl; }
+
+    public String getCreatedAt() { return createdAt; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
 }

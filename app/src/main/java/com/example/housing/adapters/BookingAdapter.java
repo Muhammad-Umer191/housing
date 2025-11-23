@@ -13,15 +13,15 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.housing.R;
-import com.example.housing.models.Booking;
+import com.example.housing.models.ServiceBooking;
 
 import java.util.List;
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingViewHolder>
 {
-    private final List<Booking> bookingList;
+    private final List<ServiceBooking> bookingList;
 
-    public BookingAdapter(List<Booking> bookingList)
+    public BookingAdapter(List<ServiceBooking> bookingList)
     {
         this.bookingList = bookingList;
     }
@@ -38,23 +38,22 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     @Override
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position)
     {
-        Booking booking = bookingList.get(position);
+        ServiceBooking booking = bookingList.get(position);
 
-        holder.serviceTitle.setText(booking.getServiceTitle());
-        holder.schedule.setText(booking.getSchedule());
-        holder.provider.setText(booking.getProvider());
-        holder.statusBadge.setText(booking.getStatusBadge());
-        holder.image.setImageResource(booking.getImageResId());
+//        holder.serviceTitle.setText(booking.getServiceTitle());
+//        holder.schedule.setText(booking.getSchedule());
+//        holder.provider.setText(booking.getProvider());
+//        holder.statusBadge.setText(booking.getStatusBadge());
+//        holder.image.setImageResource(booking.getImageResId());
 
         holder.callButton.setOnClickListener(v ->
         {
-            String phone = booking.getPhoneNumber();
-
-            if (phone != null && !phone.isEmpty())
+//            String phone = booking.getPhoneNumber();
+//            if (phone != null && !phone.isEmpty())
             {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + phone));
-                v.getContext().startActivity(intent);
+//                Intent intent = new Intent(Intent.ACTION_DIAL);
+//                intent.setData(Uri.parse("tel:" + phone));
+//                v.getContext().startActivity(intent);
             }
         });
     }

@@ -26,11 +26,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.housing.R;
 import com.example.housing.activities.ServiceList;
 import com.example.housing.adapters.CategoryAdapter;
-import com.example.housing.adapters.ServiceAdapter;
-import com.example.housing.view_model.DashboardViewModel;
+import com.example.housing.adapters.ServicesAdapter;
+import com.example.housing.viewmodel.DashboardViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.material.tabs.TabLayout;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,11 +45,10 @@ public class DashboardFragment extends Fragment
     private ImageButton searchButton;
     private RecyclerView categoryRecyclerView;
     private RecyclerView serviceRecyclerView;
-    private TabLayout bottomTabs;
     private NestedScrollView scrollView;
     private View container;
-
     private TextView addressTextView;
+
     private DashboardViewModel viewModel;
 
     @Nullable
@@ -66,16 +64,15 @@ public class DashboardFragment extends Fragment
         searchButton = view.findViewById(R.id.search_button);
         categoryRecyclerView = view.findViewById(R.id.category_recycler_view);
         serviceRecyclerView = view.findViewById(R.id.service_recycler_view);
-        bottomTabs = view.findViewById(R.id.bottom_tabs);
         scrollView = view.findViewById(R.id.dashboard_scroll_view);
         container = view.findViewById(R.id.dashboard_fragment_container);
 
         viewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         setupObservers();
         fetchCurrentLocation();
+        setupSearchButton();
 
         return view;
     }
@@ -84,7 +81,7 @@ public class DashboardFragment extends Fragment
     {
         viewModel.getCategories().observe(getViewLifecycleOwner(), categories ->
         {
-            CategoryAdapter adapter = new CategoryAdapter(categories, (category, position) ->
+            CategoryAdapter adapter = new CategoryAdapter(requireContext(), categories, (category, position) ->
             {
                 if (position == 3)
                 {
@@ -105,26 +102,43 @@ public class DashboardFragment extends Fragment
                 }
             });
 
+            categoryRecyclerView.setHasFixedSize(true);
             categoryRecyclerView.setLayoutManager(
                     new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
             );
             categoryRecyclerView.setAdapter(adapter);
         });
 
-        viewModel.getServices().observe(getViewLifecycleOwner(), services -> {
-            ServiceAdapter adapter = new ServiceAdapter(services);
-            serviceRecyclerView.setLayoutManager(
-                    new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
-            );
-            serviceRecyclerView.setAdapter(adapter);
+        viewModel.getServices().observe(getViewLifecycleOwner(), services ->
+        {
+//            ServicesAdapter adapter = new ServicesAdapter(getContext(),services);
+//            serviceRecyclerView.setHasFixedSize(true);
+//            serviceRecyclerView.setLayoutManager(
+//                    new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
+//            );
+//            serviceRecyclerView.setAdapter(adapter);
         });
     }
+
+    private void setupSearchButton()
+    {
+        searchButton.setOnClickListener(v ->
+        {
+            String query = searchField.getText().toString().trim();
+            if (!query.isEmpty())
+            {
+                Intent intent = new Intent(requireContext(), ServiceList.class);
+                intent.putExtra("search_query", query);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     @Override
     public void onResume()
     {
         super.onResume();
-
         getChildFragmentManager().addOnBackStackChangedListener(() ->
         {
             if (getChildFragmentManager().getBackStackEntryCount() == 0)
@@ -154,11 +168,10 @@ public class DashboardFragment extends Fragment
 
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
-                    if (location != null) {
+                    if (location != null)
                         setCityAddress(location);
-                    } else {
+                    else
                         addressTextView.setText(R.string.unknown_city);
-                    }
                 })
                 .addOnFailureListener(e -> addressTextView.setText(R.string.error_getting_address));
     }
@@ -166,12 +179,10 @@ public class DashboardFragment extends Fragment
     private void setCityAddress(Location location)
     {
         Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(
-                    location.getLatitude(),
-                    location.getLongitude(),
-                    1
-            );
+        try
+        {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),
+                    location.getLongitude(), 1);
 
             if (addresses != null && !addresses.isEmpty())
             {
@@ -200,7 +211,8 @@ public class DashboardFragment extends Fragment
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE)
         {
             if (grantResults.length > 0 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED ||
+                            grantResults[1] == PackageManager.PERMISSION_GRANTED))
             {
                 fetchCurrentLocation();
             }

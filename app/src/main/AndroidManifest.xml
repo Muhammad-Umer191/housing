@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.housing">
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -13,7 +15,6 @@
         android:required="false" />
 
     <application
-        android:name=".HousingApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
@@ -23,89 +24,59 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Housing">
-        <activity
-            android:name=".activities.PersonalInfo"
-            android:exported="false" />
-        <activity
-            android:name=".activities.LanguageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.ServiceDetail"
-            android:exported="false" />
-        <activity
-            android:name=".activities.ServiceList"
-            android:exported="false" />
-        <activity
-            android:name=".activities.HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.VerifyOTP"
-            android:exported="false" />
-        <activity
-            android:name=".activities.ForgotPassword"
-            android:exported="false" />
-        <activity
-            android:name=".activities.OnBoarding"
-            android:exported="false"
-            android:theme="@style/Theme.Housing" />
+
         <activity
             android:name=".activities.LoginSignup"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
+                    android:scheme="com.example.housing"
                     android:host="auth"
-                    android:path="/callback"
-                    android:scheme="com.example.housing" />
+                    android:path="/callback" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.Login"
-            android:exported="true"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="auth"
-                    android:path="/callback"
-                    android:scheme="com.example.housing" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.Signup"
-            android:exported="true"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="auth"
-                    android:path="/callback"
-                    android:scheme="com.example.housing" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".activities.SplashScreen"
             android:exported="true"
             android:theme="@style/Theme.Housing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity
+            android:name=".activities.ResetPassword"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="com.example.housing"
+                    android:host="reset-password" />
+            </intent-filter>
+        </activity>
+
+
+
+        <!-- Other activities -->
+        <activity android:name=".activities.PersonalInfo" android:exported="false" />
+        <activity android:name=".activities.LanguageActivity" android:exported="false" />
+        <activity android:name=".activities.ServiceDetail" android:exported="false" />
+        <activity android:name=".activities.ServiceList" android:exported="false" />
+        <activity android:name=".activities.HomeActivity" android:exported="false" />
+        <activity android:name=".activities.VerifyOTP" android:exported="false" />
+        <activity android:name=".activities.ForgotPassword" android:exported="false" />
+        <activity android:name=".activities.Signup" android:exported="false" />
+        <activity android:name=".activities.Login" android:exported="false" />
+        <activity android:name=".activities.OnBoarding" android:exported="false" android:theme="@style/Theme.Housing" />
+
+    </application>
 </manifest>

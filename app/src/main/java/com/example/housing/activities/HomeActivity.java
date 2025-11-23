@@ -11,7 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.housing.R;
 import com.example.housing.fragments.BookingFragment;
 import com.example.housing.fragments.DashboardFragment;
-import com.example.housing.fragments.NotificationFragment;
+//import com.example.housing.fragments.NotificationFragment;
 import com.example.housing.fragments.ProfileFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -75,7 +75,7 @@ public class HomeActivity extends AppCompatActivity
                 case 1:
                     return new BookingFragment();
                 case 2:
-                    return new NotificationFragment();
+//                    return new NotificationFragment();
                 case 3:
                     return new ProfileFragment();
                 default:

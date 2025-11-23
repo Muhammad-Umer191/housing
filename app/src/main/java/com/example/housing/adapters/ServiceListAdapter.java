@@ -1,94 +1,80 @@
 package com.example.housing.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.housing.R;
-import com.example.housing.activities.ServiceDetail;
-import com.example.housing.models.ServiceItem;
+import com.example.housing.models.Service;
 
 import java.util.List;
 
 public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.ServiceViewHolder>
 {
     private final Context context;
-    private final List<ServiceItem> list;
-    private final String category;
+    private final List<Service> serviceList;
+    private boolean isGridLayout = false;
 
-    private boolean isGrid = false;
-
-    public ServiceListAdapter(Context context, List<ServiceItem> list, String category)
+    public ServiceListAdapter(Context context, List<Service> serviceList)
     {
         this.context = context;
-        this.list = list;
-        this.category = category;
+        this.serviceList = serviceList;
     }
 
-    // ---------- FIXED: Only ONE onCreateViewHolder ----------
     @NonNull
     @Override
     public ServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        int layout = isGrid ? R.layout.item_service_grid_card
-                : R.layout.item_service_list_card;
-
-        View view = LayoutInflater.from(context).inflate(layout, parent, false);
-
+        View view = LayoutInflater.from(context)
+                .inflate(isGridLayout ? R.layout.item_service_grid_card : R.layout.item_service_list_card, parent, false);
         return new ServiceViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ServiceViewHolder holder, int position)
     {
-        ServiceItem item = list.get(position);
+        Service service = serviceList.get(position);
 
-        holder.title.setText(item.getTitle());
-        holder.rating.setText(item.getRating());
-        holder.priceLabel.setText(item.getPrice());
-        holder.priceValue.setText("$" + item.getPriceValue());
+        holder.serviceName.setText(service.getName());
+        holder.servicePrice.setText("Starts from: " + service.getBasePrice());
 
-        holder.itemView.setOnClickListener(v -> {
-            Intent i = new Intent(context, ServiceDetail.class);
-            i.putExtra("service_id", item.getId());
-            i.putExtra("title", item.getTitle());
-            i.putExtra("price", item.getPrice());
-            i.putExtra("rating", item.getRating());
-            i.putExtra("category", category);
-            context.startActivity(i);
-        });
+        // Load image using Glide
+        Glide.with(context)
+                .load(service.getImageUrl())
+                .placeholder(R.drawable.housing)
+                .into(holder.serviceImage);
     }
 
     @Override
     public int getItemCount()
     {
-        return list.size();
+        return serviceList.size();
+    }
+
+    public void setGridLayout(boolean isGrid)
+    {
+        this.isGridLayout = isGrid;
+        notifyDataSetChanged();
     }
 
     public static class ServiceViewHolder extends RecyclerView.ViewHolder
     {
-        TextView rating, title, priceLabel, priceValue;
+        ImageView serviceImage;
+        TextView serviceName, servicePrice;
 
         public ServiceViewHolder(@NonNull View itemView)
         {
             super(itemView);
-
-            rating = itemView.findViewById(R.id.rating);
-            title = itemView.findViewById(R.id.service_title);
-            priceLabel = itemView.findViewById(R.id.price);
-            priceValue = itemView.findViewById(R.id.price_value);
+            serviceImage = itemView.findViewById(R.id.service_image);
+            serviceName = itemView.findViewById(R.id.service_name);
+            servicePrice = itemView.findViewById(R.id.service_price);
         }
-    }
-
-    public void setGridLayout(boolean grid)
-    {
-        this.isGrid = grid;
-        notifyDataSetChanged();
     }
 }

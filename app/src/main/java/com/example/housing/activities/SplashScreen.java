@@ -22,13 +22,15 @@ public class SplashScreen extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        try {
+        try
+        {
             ImageView icon = findViewById(R.id.housing_icon);
             Animation splashAnim = AnimationUtils.loadAnimation(this, R.anim.splash_screen_animation);
             icon.startAnimation(splashAnim);
         }
-        catch (Exception e) {
-
+        catch (Exception e)
+        {
+            // ignore animation errors
         }
 
         final PrefManager prefManagerInstance = PrefManager.getInstance(this);
@@ -41,7 +43,7 @@ public class SplashScreen extends AppCompatActivity
             {
                 intent = new Intent(SplashScreen.this, HomeActivity.class);
             }
-            else if (!prefManagerInstance.isOnboardingDone())
+            else if (prefManagerInstance.isOnBoarded())
             {
                 intent = new Intent(SplashScreen.this, OnBoarding.class);
             }
@@ -50,10 +52,8 @@ public class SplashScreen extends AppCompatActivity
                 intent = new Intent(SplashScreen.this, LoginSignup.class);
             }
 
-            // Start the next activity and close the splash screen
             startActivity(intent);
             finish();
-
         }, SPLASH_DELAY_MS);
     }
 }

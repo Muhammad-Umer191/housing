@@ -1,53 +1,30 @@
 package com.example.housing.network;
 
-import android.content.Context;
+import com.example.housing.BuildConfig;
+
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClient
-{
-    private static final String BASE_URL = "https://pxuboqabrgabizqrxdmb.supabase.co/";
+public class RetrofitClient {
 
-    private static Retrofit retrofit = null;
-    private static Context applicationContext;
+    private static Retrofit retrofit;
 
-    // Must be called once, ideally in your Application class
-    public static void initialize(Context context)
-    {
-        applicationContext = context.getApplicationContext();
-    }
+    public static Retrofit getClient() {
 
-    public static AuthService getAuthService()
-    {
-        // AuthService doesn't need the interceptor as its calls (login/signup) are unauthenticated.
-        return getRetrofitInstance().create(AuthService.class);
-    }
+        if (retrofit == null) {
 
-    // New method for services that require authentication (e.g., getting user data)
-    public static <T> T createAuthenticatedService(Class<T> serviceClass)
-    {
-        // You'll need an OkHttpClient with the interceptor for authenticated calls
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new AuthInterceptor(applicationContext))
-                .build();
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        // Create a new Retrofit instance specifically for authenticated calls
-        Retrofit authenticatedRetrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(logging)
+                    .build();
 
-        return authenticatedRetrofit.create(serviceClass);
-    }
-
-    private static Retrofit getRetrofitInstance()
-    {
-        if(retrofit == null)
-        {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BuildConfig.SUPABASE_URL)
+                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

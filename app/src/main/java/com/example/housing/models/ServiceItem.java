@@ -9,8 +9,7 @@ public class ServiceItem
     private final String priceValue;
     private final String id;
 
-    public ServiceItem(int image, String rating, String title, String price, String priceValue, String id)
-    {
+    public ServiceItem(int image, String rating, String title, String price, String priceValue, String id) {
         this.image = image;
         this.rating = rating;
         this.title = title;
@@ -19,48 +18,16 @@ public class ServiceItem
         this.id = id;
     }
 
-    public int getImage()
-    {
-        return image;
-    }
-
-    public String getRating()
-    {
-        return rating;
-    }
-
+    public int getImage() { return image; }
+    public String getRating() { return rating; }
     public double getRatingDouble() {
-        try {
-            return Double.parseDouble(rating);
-        } catch (NumberFormatException e) {
-            return 0.0;
-        }
+        try { return Double.parseDouble(rating); } catch (NumberFormatException e) { return 0.0; }
     }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public String getPrice()
-    {
-        return price;
-    }
-
-    public String getPriceValue()
-    {
-        return priceValue;
-    }
-
+    public String getTitle() { return title; }
+    public String getPrice() { return price; }
+    public String getPriceValue() { return priceValue; }
     public double getPriceValueDouble() {
-        try {
-            return Double.parseDouble(priceValue.replaceAll("[^\\d.]", "")); // removes currency symbols
-        } catch (NumberFormatException e) {
-            return 0.0;
-        }
+        try { return Double.parseDouble(priceValue.replaceAll("[^\\d.]", "")); } catch (NumberFormatException e) { return 0.0; }
     }
-
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 }

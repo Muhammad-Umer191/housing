@@ -1,5 +1,6 @@
 package com.example.housing.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.housing.R;
 import com.example.housing.models.Category;
 
@@ -17,17 +19,18 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
 {
     private final List<Category> categoryList;
-    private final OnCategoryClickListener listener;
+    private final OnCategoryClickListener clickListener;
+    private final Context context;
 
-    public interface OnCategoryClickListener
-    {
+    public interface OnCategoryClickListener {
         void onCategoryClick(Category category, int position);
     }
 
-    public CategoryAdapter(List<Category> categoryList, OnCategoryClickListener listener)
+    public CategoryAdapter(Context context, List<Category> categoryList, OnCategoryClickListener clickListener)
     {
+        this.context = context;
         this.categoryList = categoryList;
-        this.listener = listener;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -43,17 +46,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position)
     {
         Category category = categoryList.get(position);
-
-        holder.categoryName.setText(category.getName());
-        holder.categoryIcon.setImageResource(category.getIconResId());
-
-        holder.itemView.setOnClickListener(v ->
-        {
-            if (listener != null)
-            {
-                listener.onCategoryClick(category, position);
-            }
-        });
+        holder.bind(category, clickListener, context);
     }
 
     @Override
@@ -62,16 +55,35 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categoryList.size();
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder
+    static class CategoryViewHolder extends RecyclerView.ViewHolder
     {
-        ImageView categoryIcon;
-        TextView categoryName;
+        private final TextView categoryName;
+        private final ImageView categoryIcon;
 
         public CategoryViewHolder(@NonNull View itemView)
         {
             super(itemView);
-            categoryIcon = itemView.findViewById(R.id.category_icon);
             categoryName = itemView.findViewById(R.id.category_name);
+            categoryIcon = itemView.findViewById(R.id.category_icon);
+        }
+
+        public void bind(Category category, OnCategoryClickListener clickListener, Context context)
+        {
+            categoryName.setText(category.getName());
+
+            if (category.getIconUrl() != null && !category.getIconUrl().isEmpty())
+            {
+                Glide.with(context)
+                        .load(category.getIconUrl())
+                        .placeholder(R.drawable.housing)
+                        .into(categoryIcon);
+            }
+            else
+            {
+                categoryIcon.setImageResource(R.drawable.housing);
+            }
+
+            itemView.setOnClickListener(v -> clickListener.onCategoryClick(category, getAdapterPosition()));
         }
     }
 }

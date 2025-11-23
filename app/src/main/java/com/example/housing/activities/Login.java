@@ -3,7 +3,6 @@ package com.example.housing.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,11 +11,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.housing.BuildConfig;
 import com.example.housing.R;
-import com.example.housing.network.LoginRequest;
-import com.example.housing.network.LoginResponse;
+import com.example.housing.network.AuthApi;
 import com.example.housing.network.RetrofitClient;
+import com.example.housing.network.UserApi;
 import com.example.housing.utils.PrefManager;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,10 +32,7 @@ public class Login extends AppCompatActivity
     private TextView forgotPassword;
 
     private PrefManager prefManager;
-
-    // Constants for Google Deep Link flow (even if not used for Retrofit, kept for openGoogleLogin())
-    private static final String SUPABASE_URL = "https://pxuboqabrgabizqrxdmb.supabase.co";
-    private static final String REDIRECT_URI = "com.example.housing://auth/callback";
+    private static final String REDIRECT_URI = BuildConfig.REDIRECT_URI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,11 +43,9 @@ public class Login extends AppCompatActivity
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         logInBtn = findViewById(R.id.log_in);
-        googleSignInBtn = findViewById(R.id.btn_continue_google);
         rememberMe = findViewById(R.id.rememberMe);
         forgotPassword = findViewById(R.id.forgotPassword);
 
-        // ⬅️ FIX: Use the stable Singleton instance
         prefManager = PrefManager.getInstance(this);
 
         // Autofill email if remembered
@@ -60,81 +57,73 @@ public class Login extends AppCompatActivity
         }
 
         logInBtn.setOnClickListener(v -> handleEmailLogin());
-        googleSignInBtn.setOnClickListener(v -> openGoogleLogin());
         forgotPassword.setOnClickListener(v ->
                 startActivity(new Intent(Login.this, ForgotPassword.class)));
     }
 
-    private void handleEmailLogin()
-    {
+    private void handleEmailLogin() {
         String emailInput = email.getText().toString().trim();
         String passwordInput = password.getText().toString().trim();
 
-        if(emailInput.isEmpty() || passwordInput.isEmpty())
-        {
+        if(emailInput.isEmpty() || passwordInput.isEmpty()) {
             Toast.makeText(this, "Enter email and password", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        LoginRequest loginRequest = new LoginRequest(emailInput, passwordInput);
+        JsonObject loginBody = new JsonObject();
+        loginBody.addProperty("email", emailInput);
+        loginBody.addProperty("password", passwordInput);
 
-        RetrofitClient.getAuthService().login(loginRequest) // <-- Using login endpoint
-                .enqueue(new Callback<LoginResponse>()
-                {
-                    @Override
-                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response)
-                    {
-                        if(response.isSuccessful() && response.body() != null)
-                        {
-                            LoginResponse login = response.body();
+        AuthApi authApi = RetrofitClient.getClient().create(AuthApi.class);
+        authApi.signIn(loginBody).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    JsonObject body = response.body();
+                    String accessToken = body.get("access_token").getAsString();
+                    String refreshToken = body.get("refresh_token").getAsString();
+                    String uid = body.getAsJsonObject("user").get("id").getAsString();
+                    prefManager.saveLogin(accessToken, refreshToken, uid, emailInput, "email");
+                    // --- Build JSON for users table ---
+                    JsonObject userObj = new JsonObject();
+                    userObj.addProperty("p_email", emailInput);
 
-                            // Save session tokens and user details
-                            prefManager.saveLogin(
-                                    login.getAccessToken(),
-                                    login.getRefreshToken(),
-                                    login.getUserId(),
-                                    login.getEmail(),
-                                    "email"
-                            );
-
-                            Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(Login.this, HomeActivity.class));
-                            finish();
-                        }
-                        else
-                        {
-                            String errorMsg = "Login failed: " + response.message();
-                            try {
-                                if (response.errorBody() != null) {
-                                    Log.e("Login", "Error Body: " + response.errorBody().string());
+                    UserApi userApi = RetrofitClient.getClient().create(UserApi.class);
+                    userApi.insertUser("Bearer " + accessToken, BuildConfig.SUPABASE_ANON_KEY,userObj)
+                            .enqueue(new Callback<JsonObject>() {
+                                @Override
+                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                                        prefManager.saveLogin(accessToken, refreshToken, uid, emailInput, "email");
+                                        Intent intent = new Intent(Login.this, HomeActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(Login.this, "DB insert failed. Contact Support", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            } catch (Exception e) {
-                                Log.e("Login", "Error reading error body", e);
-                            }
-                            Toast.makeText(Login.this, errorMsg, Toast.LENGTH_LONG).show();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<LoginResponse> call, Throwable t)
-                    {
-                        Toast.makeText(Login.this, "Login failed: " + t.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                        Log.e("Login", "Network failure", t);
-                    }
-                });
+                                @Override
+                                public void onFailure(Call<JsonObject> call, Throwable t) {
+                                }
+                            });
+
+                    Toast.makeText(Login.this, "Login successful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Login.this, HomeActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(Login.this, "Login failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(Login.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
-    private void openGoogleLogin()
-    {
-        // Launches the browser redirect flow for Google Auth
-        String url = SUPABASE_URL + "/auth/v1/authorize" +
-                "?provider=google" +
-                "&redirect_to=" + REDIRECT_URI;
-
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-        Toast.makeText(this, "Opening Google login...", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     protected void onNewIntent(Intent intent)
@@ -147,7 +136,6 @@ public class Login extends AppCompatActivity
             String fragment = uri.getFragment();
             if(fragment != null)
             {
-                // ⬅️ FIX: Add error handling for invalid/expired links here too
                 if (fragment.contains("error=")) {
                     Toast.makeText(this, "Authentication failed: Link invalid or expired.", Toast.LENGTH_LONG).show();
                     // Do not save session, redirect to login

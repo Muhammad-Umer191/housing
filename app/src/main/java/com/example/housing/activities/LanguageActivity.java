@@ -86,7 +86,7 @@ public class LanguageActivity extends BaseActivity {
         languageSpinner.setAdapter(adapter);
 
         String currentLocaleCode = prefManager.getLanguage();
-        String currentLanguageName = languages[0]; // Default to first language in case of error
+        String currentLanguageName = languages[0];
 
         for (Map.Entry<String, String> entry : languageMap.entrySet())
         {

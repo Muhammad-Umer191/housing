@@ -15,6 +15,7 @@
     <color name="star_gold">#FFC107</color>
     <color name="orange">#FB9450</color>
     <color name="red">#EB4238</color>
+    <color name="dark_gray">#2b2c2e</color>
     <color name="transparent">#00000000</color>
 
 </resources>

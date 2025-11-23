@@ -1,42 +1,36 @@
 package com.example.housing.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
-public class TimeUtils
-{
+public class TimeUtils {
 
-    public static String getRelativeTime(long timestampMillis)
+    /**
+     * Formats a timestamp string into a user-friendly date/time.
+     * Example: "2025-11-21T14:30:00Z" → "Nov 21, 2025, 02:30 PM"
+     *
+     * @param timestamp ISO 8601 format timestamp
+     * @return formatted date/time string
+     */
+    public static String getFormattedTime(String timestamp)
     {
-        long now = System.currentTimeMillis();
-        long diff = now - timestampMillis;
+        if (timestamp == null || timestamp.isEmpty()) return "";
 
-        if (diff < TimeUnit.MINUTES.toMillis(1))
-        {
-            return "just now";
-        }
-        else if (diff < TimeUnit.HOURS.toMillis(1))
-        {
-            long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-            return minutes + " min ago";
-        }
-        else if (diff < TimeUnit.DAYS.toMillis(1))
-        {
-            long hours = TimeUnit.MILLISECONDS.toHours(diff);
-            return hours + " hr ago";
-        }
-        else if (diff < TimeUnit.DAYS.toMillis(7))
-        {
-            long days = TimeUnit.MILLISECONDS.toDays(diff);
-            return days + " day" + (days > 1 ? "s" : "") + " ago";
-        }
-        else
-        {
-            SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
-            return sdf.format(new Date(timestampMillis));
+        // Parse the input timestamp
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        inputFormat.setLenient(false);
+
+        // Desired output format
+        SimpleDateFormat outputFormat = new SimpleDateFormat("MMM dd, yyyy, hh:mm a", Locale.getDefault());
+
+        try {
+            Date date = inputFormat.parse(timestamp);
+            return date != null ? outputFormat.format(date) : "";
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return timestamp; // fallback to original if parsing fails
         }
     }
 }

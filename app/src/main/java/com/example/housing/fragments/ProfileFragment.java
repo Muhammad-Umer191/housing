@@ -143,7 +143,6 @@ public class ProfileFragment extends Fragment
             languageIcon.setImageResource(R.drawable.language);
         }
 
-        // 3. Logout Menu (Title only)
         TextView logoutTitle = menuLogout.findViewById(R.id.menu_title);
         if (logoutTitle != null) {
             logoutTitle.setText(R.string.action_logout);
@@ -223,7 +222,7 @@ public class ProfileFragment extends Fragment
         if (prefManager != null)
         {
             String email = prefManager.getEmail();
-            String storedName = prefManager.getUserId(); // Assume UserID stores the name
+            String storedName = prefManager.getFullName();
 
             // Set Email
             userEmail.setText(email != null ? email : getString(R.string.not_available));

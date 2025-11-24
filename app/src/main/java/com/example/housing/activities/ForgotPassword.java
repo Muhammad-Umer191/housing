@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.housing.BuildConfig;
 import com.example.housing.R;
-import com.example.housing.models.User;
 import com.example.housing.network.AuthApi;
 import com.example.housing.network.ResendApi;
 import com.example.housing.network.ResendClient;
@@ -34,8 +33,6 @@ public class ForgotPassword extends AppCompatActivity
     private EditText emailInput;
     private Button confirmButton;
 
-//    private UserRepository userRepository;
-//    private MailRepository mailRepository;
 //
 //    private static final String DIGITS = "0123456789";
 //    private static final int OTP_LENGTH = 6;

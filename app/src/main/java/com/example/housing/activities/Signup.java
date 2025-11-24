@@ -3,11 +3,9 @@ package com.example.housing.activities;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.housing.utils.PrefManager;
 import com.example.housing.R;
@@ -57,7 +55,6 @@ public class Signup extends AppCompatActivity {
             return;
         }
 
-        // --- Build JSON for Supabase signup ---
         JsonObject signupBody = new JsonObject();
         signupBody.addProperty("email", emailInput);
         signupBody.addProperty("password", passwordInput);

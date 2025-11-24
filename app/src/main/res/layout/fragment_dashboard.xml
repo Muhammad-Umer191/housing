@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="24dp">
 
+            <!-- Location Layout -->
             <LinearLayout
                 android:id="@+id/location_layout"
                 android:layout_width="wrap_content"
@@ -52,6 +53,7 @@
                     android:textColor="@color/black" />
             </LinearLayout>
 
+            <!-- Main Title -->
             <TextView
                 android:id="@+id/main_title"
                 android:layout_width="0dp"
@@ -67,6 +69,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Search Card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/search_card"
                 android:layout_width="0dp"
@@ -105,7 +108,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         />
 
-
                     <ImageButton
                         android:id="@+id/search_button"
                         android:layout_width="32dp"
@@ -121,22 +123,49 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
+
+            <!-- Category Section -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/category_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/search_card"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:listitem="@layout/item_category_icon"
-                tools:itemCount="4"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:clipToPadding="false"
-                />
+                tools:itemCount="3" />
+
+            <ImageButton
+                android:id="@+id/see_all"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/rounded_circle_light_background_with_right_chevron"
+                android:padding="12dp"
+                android:src="@drawable/chevron_right"
+                app:layout_constraintBottom_toBottomOf="@id/category_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_card"
+                app:layout_constraintVertical_bias="0.244" />
+
+            <TextView
+                android:id="@+id/see_all_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="See All"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/see_all"
+                app:layout_constraintStart_toStartOf="@id/see_all"
+                app:layout_constraintEnd_toEndOf="@id/see_all" />
 
             <TextView
                 android:id="@+id/cleaning_title"
@@ -144,25 +173,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
-                android:text="@string/cleaning_services_title"
+                android:text="@string/services"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@+id/category_recycler_view"
                 app:layout_constraintStart_toStartOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/see_all_cleaning"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="@string/see_all_text"
-                android:textSize="14sp"
-                android:textColor="@color/gray_500"
-                app:layout_constraintTop_toTopOf="@+id/cleaning_title"
-                app:layout_constraintBottom_toBottomOf="@+id/cleaning_title"
-                app:layout_constraintEnd_toEndOf="parent"
                 />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -182,26 +198,10 @@
                 tools:itemCount="3"
                 />
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/offers_recycler_view"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="130dp"-->
-<!--                android:layout_marginTop="24dp"-->
-<!--                android:clipToPadding="false"-->
-<!--                android:paddingStart="16dp"-->
-<!--                android:paddingEnd="16dp"-->
-<!--                android:orientation="horizontal"-->
-<!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/service_recycler_view"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                tools:listitem="@layout/item_offer_card"-->
-<!--                tools:itemCount="2"-->
-<!--                />-->
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Bottom Tabs -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/bottom_tabs"
         android:layout_width="match_parent"
@@ -215,6 +215,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
+    <!-- Hidden Fragment Container -->
     <FrameLayout
         android:id="@+id/dashboard_fragment_container"
         android:layout_width="0dp"
@@ -225,7 +226,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

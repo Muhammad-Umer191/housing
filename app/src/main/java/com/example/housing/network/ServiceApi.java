@@ -1,43 +1,52 @@
 package com.example.housing.network;
 
-import com.example.housing.models.Service;
-import com.example.housing.models.ServiceItem;
-import com.example.housing.models.Category;
-import com.example.housing.models.ServiceWithCategory;
-import java.util.List;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
+import retrofit2.http.Path;
 import retrofit2.http.Body;
-import retrofit2.http.Headers;
+import retrofit2.http.Query;
 
 public interface ServiceApi {
 
-    // -------------------- CRUD --------------------
-    @GET("categories")
-    Call<List<Category>> getAllCategories();
+    // Get all services of a user
+    @GET("/rest/v1/services")
+    Call<JsonArray> getUserServices(
+            @Header("Authorization") String token,
+            @Header("apiKey") String apiKey,
+            @Query("user_id") String userId
+    );
 
-    @GET("services")
-    Call<List<Service>> getServicesByCategoryId(@Query("category_id") String filter);
 
-    @GET("services")
-    Call<List<Service>> getServiceDetails(@Query("id") String filter);
+    @POST("/rest/v1/rpc/add_service_for_current_user")
+    Call<JsonObject> createService(
+            @Header("Authorization") String token,
+            @Header("apiKey") String apiKey,
+            @Body JsonObject body
+    );
 
-    @GET("services")
-    Call<List<Service>> searchServices(@Query("query") String query);
+    @GET("/rest/v1/rpc/get_random_services")
+    Call<JsonArray> getRandomServices(
+            @Header("Authorization") String bearerToken,
+            @Header("apiKey") String apiKey
+    );
 
-    @GET("service_items")
-    Call<List<ServiceItem>> getServiceItems();
+    @POST("/rest/v1/rpc/get_services_page_auth")
+    Call<JsonArray> getServices(
+            @Header("Authorization") String token,
+            @Header("apikey") String apiKey,
+            @Body JsonObject body
+    );
 
-    @Headers({"Content-Type: application/json", "Prefer: return=representation"})
-    @POST("services")
-    Call<Service> createService(@Body Service service);
+    @POST("/rest/v1/rpc/get_service_reviews_auth")
+    Call<JsonArray> getServiceReviews(
+            @Header("Authorization") String token,
+            @Header("apikey") String apiKey,
+            @Body JsonObject body
+    );
 
-    // -------------------- RPC --------------------
-    @GET("rpc/get_service_with_category")
-    Call<List<ServiceWithCategory>> getServiceWithCategory(@Query("service_id") String serviceId);
-
-    @GET("rpc/get_service_items_with_details")
-    Call<List<ServiceItem>> getServiceItemsWithDetails(@Query("service_id") String serviceId);
 }

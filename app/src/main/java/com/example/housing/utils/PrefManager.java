@@ -7,8 +7,6 @@ import android.util.Log;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
-import com.example.housing.models.User;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -81,14 +79,13 @@ public class PrefManager {
                 .remove(KEY_EMAIL)
                 .remove(KEY_PROVIDER)
                 .remove(KEY_ON_BOARDED)
+                .remove(KEY_FULL_NAME)
                 .apply();
     }
 
     // ----------------- LANGUAGE -----------------
     public void setLanguage(String languageCode) {
-        editor()
-                .putString(KEY_LANGUAGE, languageCode)
-                .apply();
+        editor().putString(KEY_LANGUAGE, languageCode).apply();
     }
 
     public String getLanguage() {
@@ -96,37 +93,60 @@ public class PrefManager {
     }
 
     // ----------------- USER INFO -----------------
-    public void saveUser(User user) {
-        if (user == null) return;
-        editor()
-                .putString(KEY_USER_ID, user.getId())
-                .putString(KEY_EMAIL, user.getEmail())
-                .putString(KEY_FULL_NAME, user.getFullName())
-                .apply();
+    public void setUserId(String userId) {
+        editor().putString(KEY_USER_ID, userId).apply();
     }
 
-    public User getUser() {
-        User user = new User();
-        user.setId(pref.getString(KEY_USER_ID, null));
-        user.setEmail(pref.getString(KEY_EMAIL, null));
-        user.setFullName(pref.getString(KEY_FULL_NAME, ""));
-        return user;
+    public String getUserId() {
+        return pref.getString(KEY_USER_ID, null);
     }
 
-    // ----------------- GETTERS -----------------
-    public String getAccessToken() { return pref.getString(KEY_ACCESS_TOKEN, null); }
-    public String getRefreshToken() { return pref.getString(KEY_REFRESH_TOKEN, null); }
-    public String getUserId() { return pref.getString(KEY_USER_ID, null); }
-    public String getEmail() { return pref.getString(KEY_EMAIL, null); }
-    public boolean isOnBoarded() { return "true".equals(pref.getString(KEY_ON_BOARDED, "false")); }
-    public String getProvider() { return pref.getString(KEY_PROVIDER, null); }
-    public String getFullName() { return pref.getString(KEY_FULL_NAME, ""); }
-
-    // Add this method to PrefManager (inside the class)
-    public void setFullName(String name) {
-        editor()
-                .putString(KEY_FULL_NAME, name)
-                .apply();
+    public void setEmail(String email) {
+        editor().putString(KEY_EMAIL, email).apply();
     }
 
+    public String getEmail() {
+        return pref.getString(KEY_EMAIL, null);
+    }
+
+    public void setFullName(String fullName) {
+        editor().putString(KEY_FULL_NAME, fullName).apply();
+    }
+
+    public String getFullName() {
+        return pref.getString(KEY_FULL_NAME, "");
+    }
+
+    public void setProvider(String provider) {
+        editor().putString(KEY_PROVIDER, provider).apply();
+    }
+
+    public String getProvider() {
+        return pref.getString(KEY_PROVIDER, null);
+    }
+
+    public void setOnBoarded(boolean onBoarded) {
+        editor().putString(KEY_ON_BOARDED, onBoarded ? "true" : "false").apply();
+    }
+
+    public boolean isOnBoarded() {
+        return "true".equals(pref.getString(KEY_ON_BOARDED, "false"));
+    }
+
+    // ----------------- TOKENS -----------------
+    public void setAccessToken(String token) {
+        editor().putString(KEY_ACCESS_TOKEN, token).apply();
+    }
+
+    public String getAccessToken() {
+        return pref.getString(KEY_ACCESS_TOKEN, null);
+    }
+
+    public void setRefreshToken(String token) {
+        editor().putString(KEY_REFRESH_TOKEN, token).apply();
+    }
+
+    public String getRefreshToken() {
+        return pref.getString(KEY_REFRESH_TOKEN, null);
+    }
 }

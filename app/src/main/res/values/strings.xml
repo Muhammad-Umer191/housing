@@ -159,6 +159,12 @@
     <string name="save_button">Save Button</string>
     <string name="service_name">Service Name</string>
     <string name="delete_service">Delete service</string>
+    <string name="experience_years">Experience (years)</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="image_url">Image URL</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="services">Services</string>
 
 
 </resources>

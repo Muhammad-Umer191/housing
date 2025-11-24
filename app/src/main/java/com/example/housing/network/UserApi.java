@@ -1,6 +1,7 @@
 package com.example.housing.network;
 
 import com.example.housing.models.User;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -25,19 +26,30 @@ public interface UserApi {
     );
 
 
-    @GET("users")
+    @GET("/rest/v1/users")
     Call<List<User>> getUserByEmail(
             @Header("apikey") String apiKey,
             @Header("Authorization") String authBearer,
             @Query("email") String emailEq
     );
 
+    @GET("/rest/v1/users")
+    Call<JsonArray> getUser(
+            @Header("Authorization") String authToken,
+            @Header("apikey") String anonKey,
+            @Query("id") String idQuery
+    );
 
-    @GET("/users/{id}")
-    Call<Map<String, Object>> getUserDetails(@Path("id") String userId);
 
-    @PUT("/users/{id}")
-    Call<Map<String, Object>> updateUserDetails(@Path("id") String userId,
-                                                @Body Map<String, Object> updates);
+    @PATCH("/rest/v1/users")
+    Call<JsonArray> updateUser(
+            @Header("Authorization") String token,
+            @Header("apikey") String anonKey,
+            @Header("Prefer") String prefer,
+            @Query("id") String idFilter,
+            @Body JsonObject body
+    );
+
+
 
 }

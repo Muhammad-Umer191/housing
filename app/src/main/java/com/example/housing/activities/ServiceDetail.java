@@ -1,216 +1,88 @@
 package com.example.housing.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.housing.R;
-import com.example.housing.fragments.BookingBottomSheet;
 
-public class ServiceDetail extends AppCompatActivity
-{
-    private TextView text_rating, service_title, text_total_value;
-    private LinearLayout property_home, property_office, property_villa;
+public class ServiceDetail extends AppCompatActivity {
 
-    private LinearLayout units_counter, bedrooms_counter;
-    private TextView units_value, bedrooms_value;
-
-    private EditText description_input;
-
-    private Button button_book_now, button_save_draft;
-
-    private String serviceId;
-    private String title;
-    private double basePrice;
-    private double rating;
-    private String category;
-
-    private int units = 1;
-    private int bedrooms = 1;
-    private String selectedProperty = null;
+    private TextView serviceTitle, textRating;
+    private ImageView serviceImage;
+    private EditText descriptionInput;
+    private TextView textTotalValue;
+    private Button buttonBookNow, buttonSaveDraft;
+    String serviceId;
+    String name;
+    String description;
+    double basePrice;
+    double avgRating;
+    int reviewCount;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_detail);
 
-        getIntentData();
+        // Initialize views
+        serviceTitle = findViewById(R.id.service_title);
+        textRating = findViewById(R.id.text_rating);
+        serviceImage = findViewById(R.id.service_image);
+        descriptionInput = findViewById(R.id.description_input);
+        textTotalValue = findViewById(R.id.text_total_value);
+        buttonBookNow = findViewById(R.id.button_book_now);
+        buttonSaveDraft = findViewById(R.id.button_save_draft);
 
-        initViews();
-        setupPropertySelection();
-        setupUnitCounter();
-        setupBedroomCounter();
-        updateTotalBill();
+        serviceId = getIntent().getStringExtra("service_id");
+        if(serviceId == null) serviceId = "";
 
-        button_book_now.setOnClickListener(v ->
-        {
-            // Validation
-            if (selectedProperty == null || selectedProperty.isEmpty()) {
-                Toast.makeText(this, "Please select a property type", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        name = getIntent().getStringExtra("name");
+        if(name == null) name = "";
 
-            if (units <= 0) {
-                Toast.makeText(this, "Please select at least 1 unit", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        description = getIntent().getStringExtra("description");
+        if(description == null) description = "";
 
-            if (bedrooms <= 0) {
-                Toast.makeText(this, "Please select at least 1 bedroom", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        basePrice = getIntent().getDoubleExtra("base_price", 0);
+        String imageUrl = getIntent().getStringExtra("image_url");
+        if(imageUrl == null) imageUrl = "";
 
-            BookingBottomSheet bottomSheet = new BookingBottomSheet();
-            bottomSheet.show(getSupportFragmentManager(), "bookingBottomSheet");
-        });
+        avgRating = getIntent().getDoubleExtra("avg_rating", 0);
+        reviewCount = getIntent().getIntExtra("review_count", 0);
 
-        button_save_draft.setOnClickListener(view ->
-        {
-            // TODO: 11/15/25 Add draft logic
-            Toast.makeText(this, "Draft saved", Toast.LENGTH_SHORT).show();
-        });
-    }
 
-    private void getIntentData()
-    {
-        Intent i = getIntent();
+        // Set values to views
+        serviceTitle.setText(name);
+        textRating.setText(String.valueOf(avgRating));
 
-        serviceId = i.getStringExtra("service_id");
-        title = i.getStringExtra("title");
-        basePrice = i.getDoubleExtra("price", 0.0);
-        rating = i.getDoubleExtra("rating", 0.0);
-        category = i.getStringExtra("category");
-    }
-
-    private void initViews()
-    {
-        text_rating = findViewById(R.id.text_rating);
-        service_title = findViewById(R.id.service_title);
-        text_total_value = findViewById(R.id.text_total_value);
-
-        property_home = findViewById(R.id.property_home);
-        property_office = findViewById(R.id.property_office);
-        property_villa = findViewById(R.id.property_villa);
-
-        ((ImageView) property_home.findViewById(R.id.property_icon)).setImageResource(R.drawable.home);
-        ((TextView) property_home.findViewById(R.id.property_label)).setText(R.string.home);
-
-        ((ImageView) property_office.findViewById(R.id.property_icon)).setImageResource(R.drawable.office);
-        ((TextView) property_office.findViewById(R.id.property_label)).setText(R.string.office);
-
-        ((ImageView) property_villa.findViewById(R.id.property_icon)).setImageResource(R.drawable.villa);
-        ((TextView) property_villa.findViewById(R.id.property_label)).setText(R.string.villa);
-
-        units_counter = findViewById(R.id.units_counter);
-        bedrooms_counter = findViewById(R.id.bedrooms_counter);
-
-        units_value = units_counter.findViewById(R.id.text_value);
-        bedrooms_value = bedrooms_counter.findViewById(R.id.text_value);
-
-        description_input = findViewById(R.id.description_input);
-
-        button_book_now = findViewById(R.id.button_book_now);
-        button_save_draft = findViewById(R.id.button_save_draft);
-
-        text_rating.setText(String.valueOf(rating));
-        service_title.setText(title);
-    }
-
-    private void setupPropertySelection()
-    {
-        property_home.setOnClickListener(view ->
-        {
-            selectedProperty = "Home";
-            highlightSelected(property_home, property_office, property_villa);
-        });
-
-        property_office.setOnClickListener(view ->
-        {
-            selectedProperty = "Office";
-            highlightSelected(property_office, property_home, property_villa);
-        });
-
-        property_villa.setOnClickListener(view ->
-        {
-            selectedProperty = "Villa";
-            highlightSelected(property_villa, property_home, property_office);
-        });
-    }
-
-    private void highlightSelected(View selected, View... others)
-    {
-        selected.setBackgroundResource(R.drawable.property_selected_border);
-
-        for (View v : others)
-        {
-            v.setBackgroundResource(R.drawable.property_unselected_border);
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .centerCrop()
+                    .placeholder(R.color.gray_500)
+                    .into(serviceImage);
+        } else {
+            serviceImage.setBackgroundResource(R.color.gray_500);
         }
-    }
 
-    private void setupUnitCounter()
-    {
-        ImageButton dec = units_counter.findViewById(R.id.button_decrement);
-        ImageButton inc = units_counter.findViewById(R.id.button_increment);
+        descriptionInput.setText(description);
+        textTotalValue.setText("USD " + basePrice);
 
-        dec.setOnClickListener(view ->
-        {
-            if (units > 1)
-            {
-                units--;
-                units_value.setText(String.valueOf(units));
-                updateTotalBill();
-            }
+        // Handle buttons
+        buttonBookNow.setOnClickListener(v -> {
+            // Implement booking logic here
+            Toast.makeText(ServiceDetail.this, "Booked " + name, Toast.LENGTH_SHORT).show();
         });
 
-        inc.setOnClickListener(view ->
-        {
-            units++;
-            units_value.setText(String.valueOf(units));
-            updateTotalBill();
+        buttonSaveDraft.setOnClickListener(v -> {
+            String userDescription = descriptionInput.getText().toString().trim();
+            Toast.makeText(ServiceDetail.this, "Draft saved for " + name, Toast.LENGTH_SHORT).show();
         });
-    }
-
-    private void setupBedroomCounter()
-    {
-        ImageButton dec = bedrooms_counter.findViewById(R.id.button_decrement);
-        ImageButton inc = bedrooms_counter.findViewById(R.id.button_increment);
-
-        dec.setOnClickListener(view ->
-        {
-            if (bedrooms > 1)
-            {
-                bedrooms--;
-                bedrooms_value.setText(String.valueOf(bedrooms));
-                updateTotalBill();
-            }
-        });
-
-        inc.setOnClickListener(view ->
-        {
-            bedrooms++;
-            bedrooms_value.setText(String.valueOf(bedrooms));
-            updateTotalBill();
-        });
-    }
-
-    private void updateTotalBill()
-    {
-        text_total_value.setText("USD " + calculateTotal());
-    }
-
-    private double calculateTotal()
-    {
-        return basePrice * units * bedrooms;
     }
 }
